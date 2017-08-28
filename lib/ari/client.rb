@@ -1,4 +1,5 @@
 # require 'typhoeus'
+require 'net/http'
 require 'multi_json'
 require 'ari/request_error'
 require 'ari/server_error'
