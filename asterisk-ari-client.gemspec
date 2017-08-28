@@ -27,9 +27,12 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "vcr", "~> 2.9.3"
   spec.add_development_dependency "webmock", "~> 1.19.0"
 
-  spec.add_development_dependency "activesupport", "~> 4.1.6"
+  spec.add_development_dependency 'activesupport', '~> 5.1', '>= 5.1.3'
+  spec.add_development_dependency 'pry', '~> 0.10.4'
+  spec.add_development_dependency 'awesome_print', '~> 1.7'
 
-  spec.add_dependency "multi_json"
-  spec.add_dependency "websocket-client-simple", "~> 0.2.0"
-  spec.add_dependency "event_emitter", "~> 0.2.5"
+  spec.add_dependency 'multi_json', '~> 1.11', '>= 1.11.2'
+  spec.add_dependency 'websocket-client-simple', '~> 0.3.0'
+  spec.add_dependency 'event_emitter', '~> 0.2.6'
+  spec.add_dependency 'typhoeus', '~> 1.3'
 end

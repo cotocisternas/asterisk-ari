@@ -33,8 +33,8 @@ task :generate do
 
   resources.each do |resource_name|
     url = base_url % { resource_name: resource_name }
-    puts ">> generating #{resource_name} from #{url}"
     json = JSON.parse open(url).read
+    puts ">> generating #{resource_name} from #{url}"
     generator = Ari::Generators::ResourceGenerator.new(
       resource_name,
       json,
