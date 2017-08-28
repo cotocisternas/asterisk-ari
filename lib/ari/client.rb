@@ -1,4 +1,4 @@
-require 'typhoeus'
+# require 'typhoeus'
 require 'multi_json'
 require 'ari/request_error'
 require 'ari/server_error'
@@ -17,6 +17,13 @@ module Ari
       app: 'dialplan'
     }
 
+    HTTP_HEADERS = {
+      'Content-Type'    => 'application/json',
+      'Accept'          => 'application/json',
+      'Accept-Charset'  => 'utf-8',
+      'User-Agent'      => "asterisk-ari-client/#{::Asterisk::Ari::Client::VERSION} ruby/#{RUBY_VERSION}"
+    }
+
     def initialize(options = {})
       @options = DEFAULTS.merge options
       @uri = URI.parse @options[:url]
@@ -24,30 +31,30 @@ module Ari
     end
 
     %w{ get put post delete }.each do |http_method|
-      define_method http_method do |path, params = {}|
-        params.merge!({api_key: @options[:api_key], app: @options[:app]})
-        Typhoeus.send(http_method,
-          "#{@uri.to_s}#{path}",
-          headers: {
-            'Content-Type'    => 'application/json',
-            'Accept'          => 'application/json',
-            'Accept-Charset'  => 'utf-8',
-            'User-Agent'      => "asterisk-ari/#{::Asterisk::Ari::Client::VERSION} ruby/#{RUBY_VERSION}"
-          },
-          params: params
-        )
-      end
-
-      # method_klass = Net::HTTP.const_get http_method.to_s.capitalize
       # define_method http_method do |path, params = {}|
-      #   request_body = params.delete(:body)
-      #   params.merge!({ api_key: @options[:api_key], app: @options[:app] })
-      #   query_string = URI.encode_www_form params
-      #   request_path = "#{@uri.path}#{path}?#{query_string}"
-      #   request = method_klass.new request_path, HTTP_HEADERS
-      #   request.body = request_body.is_a?(Hash) ? MultiJson.dump(request_body) : request_body
-      #   send_request request
+      #   params.merge!({api_key: @options[:api_key], app: @options[:app]})
+      #   Typhoeus.send(http_method,
+      #     "#{@uri.to_s}#{path}",
+      #     headers: {
+      #       'Content-Type'    => 'application/json',
+      #       'Accept'          => 'application/json',
+      #       'Accept-Charset'  => 'utf-8',
+      #       'User-Agent'      => "asterisk-ari/#{::Asterisk::Ari::Client::VERSION} ruby/#{RUBY_VERSION}"
+      #     },
+      #     params: params
+      #   )
       # end
+
+      method_klass = Net::HTTP.const_get http_method.to_s.capitalize
+      define_method http_method do |path, params = {}|
+        request_body = params.delete(:body)
+        params.merge!({ api_key: @options[:api_key], app: @options[:app] })
+        query_string = URI.encode_www_form params
+        request_path = "#{@uri.path}#{path}?#{query_string}"
+        request = method_klass.new request_path, HTTP_HEADERS
+        request.body = request_body.is_a?(Hash) ? MultiJson.dump(request_body) : request_body
+        send_request request
+      end
     end
 
     def connect_websocket
