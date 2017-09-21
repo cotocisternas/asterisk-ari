@@ -22,7 +22,7 @@ module Ari
     #
     def self.list(options = {})
       path = '/deviceStates'
-      response = client(options).get(path, options).body
+      response = client(options).get(path, options)
       response.map { |hash| DeviceState.new(hash.merge(client: options[:client])) }
     end
 
@@ -38,7 +38,7 @@ module Ari
     def self.get(options = {})
       raise ArgumentError.new("Parameter deviceName must be passed in options hash.") unless options[:deviceName]
       path = '/deviceStates/%{deviceName}' % options
-      response = client(options).get(path, options).body
+      response = client(options).get(path, options)
       DeviceState.new(response.merge(client: options[:client]))
     end
 
@@ -61,7 +61,7 @@ module Ari
       raise ArgumentError.new("Parameter deviceName must be passed in options hash.") unless options[:deviceName]
       raise ArgumentError.new("Parameter deviceState must be passed in options hash.") unless options[:deviceState]
       path = '/deviceStates/%{deviceName}' % options
-      response = client(options).put(path, options).body
+      response = client(options).put(path, options)
     end
 
     def update(options = {})
@@ -80,7 +80,7 @@ module Ari
     def self.delete(options = {})
       raise ArgumentError.new("Parameter deviceName must be passed in options hash.") unless options[:deviceName]
       path = '/deviceStates/%{deviceName}' % options
-      response = client(options).delete(path, options).body
+      response = client(options).delete(path, options)
     rescue Ari::RequestError => e
       raise unless e.code == '404'
     end
