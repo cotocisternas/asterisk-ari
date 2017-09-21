@@ -6,7 +6,7 @@ require 'ari/generators/resource_generator'
 desc "Generate resources from JSON specification"
 task :generate do
 
-  base_url = 'http://svn.asterisk.org/svn/asterisk/trunk/rest-api/api-docs/%{resource_name}.json'
+  base_url = 'https://raw.githubusercontent.com/asterisk/asterisk/13.15/rest-api/api-docs/%{resource_name}.json'
   resources = %w{ applications asterisk bridges channels deviceStates endpoints
     events mailboxes playbacks recordings sounds
   }

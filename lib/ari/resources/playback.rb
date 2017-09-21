@@ -27,7 +27,7 @@ module Ari
     def self.get(options = {})
       raise ArgumentError.new("Parameter playbackId must be passed in options hash.") unless options[:playbackId]
       path = '/playbacks/%{playbackId}' % options
-      response = client(options).get(path, options)
+      response = client(options).get(path, options).body
       Playback.new(response.merge(client: options[:client]))
     end
 
@@ -47,7 +47,7 @@ module Ari
     def self.stop(options = {})
       raise ArgumentError.new("Parameter playbackId must be passed in options hash.") unless options[:playbackId]
       path = '/playbacks/%{playbackId}' % options
-      response = client(options).delete(path, options)
+      response = client(options).delete(path, options).body
     rescue Ari::RequestError => e
       raise unless e.code == '404'
     end
@@ -70,7 +70,7 @@ module Ari
       raise ArgumentError.new("Parameter playbackId must be passed in options hash.") unless options[:playbackId]
       raise ArgumentError.new("Parameter operation must be passed in options hash.") unless options[:operation]
       path = '/playbacks/%{playbackId}/control' % options
-      response = client(options).post(path, options)
+      response = client(options).post(path, options).body
     end
 
     def control(options = {})
